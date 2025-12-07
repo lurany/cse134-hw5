@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form (No JS)</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 0;
+        }
+
+        input, textarea {
+            padding: 8px;
+            font-size: 1rem;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            min-height: 120px;
+        }
+
+        input:user-invalid, textarea:user-invalid {
+            border: 2px solid #d00;
+            background-color: #ffecec;
+        }
+
+        input:user-valid, textarea:user-valid {
+            border: 2px solid #67ff21;
+            background-color: #f2fff2;
+        }
+
+        .outputs {
+            display: grid;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        output {
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 40px;
+            font-size: 0.9rem;
+        }
+
+        .errors {
+            border-color: #d00;
+        }
+
+        .info {
+            border-color: #489be4;
+        }
+
+        .illegal-char {
+            outline: 2px solid #d00;
+        }
+
+        .near-limit {
+            border-color: orange;
+            background-color: #fff4e0;
+        }
+
+        :root {
+            --bg: white;
+            --text: black;
+            --input-bg: white;
+        }
+
+        .dark {
+            --bg: #121212;
+            --text: #f2f2f2;
+            --input-bg: #1e1e1e;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        input, textarea {
+            background-color: var(--input-bg);
+            color: var(--text);
+        }
+
+        ::view-transition-old(root), ::view-transition-new(root) {
+            animation-duration: 300ms;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Contact Form</h1>
+
+    <button id="theme-toggle">Dark Mode</button>
+
+    <form action="https://httpbin.org/post" method="post" novalidate>
+        <input type="hidden" name="possible_bot" value="true">
+
+        <label>
+            Name *
+            <input 
+                type="text" 
+                name="name"
+                required
+                minlength="2"
+                maxlength="40"
+                pattern="[A-Za-z\s]+"
+            >
+        </label>
+
+        <label>
+            Email *
+            <input 
+                type="email" 
+                name="email"
+                required
+                maxlength="80"
+            >
+        </label>
+
+        <label>
+            Subject
+            <input 
+                type="text" 
+                name="subject"
+                maxlength="80"
+            >
+        </label>
+
+        <label>
+            Comments *
+            <textarea 
+                name="comments"
+                required
+                minlength="5"
+                maxlength="500"
+            ></textarea>
+        </label>
+
+        <button type="submit">Submit</button>
+
+        <div class="outputs">
+            <output class="errors" id="form-errors"></output>
+            <output class="info" id="form-info"></output>
+        </div>
+    </form>
+
+    <script>
+        const form = document.querySelector('form');
+        const errorsBox = document.getElementById('form-errors');
+        const infoBox = document.getElementById('form-info');
+
+        const nameField = form.elements['name'];
+        const emailField = form.elements['email'];
+        const subjectField = form.elements['subject'];
+        const commentsField = form.elements['comments'];
+
+        // characters that are NOT allowed
+        const DISALLOWED = /[^A-Za-z0-9\s.,!?'"@()-]/g;
+
+        // history of submit-time errors
+        let formErrors = [];
+
+        function showErrors(list) {
+            if (!list.length) {
+            errorsBox.textContent = '';
+            return;
+            }   
+            errorsBox.textContent = list
+            .map(e => `${e.field}: ${e.message}`)
+            .join('\n');
+        }
+
+        function showInfo(msg) {
+            infoBox.textContent = msg || '';
+        }
+
+        function updateHiddenErrors() {
+            let hidden = form.querySelector('input[name="form-errors"]');
+            if (!hidden) {
+            hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'form-errors';
+            form.appendChild(hidden);
+            }
+            hidden.value = JSON.stringify(formErrors);
+        }
+
+        // 🔹 When user types
+        form.addEventListener('input', (evt) => {
+            const target = evt.target;
+            if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
+
+            // 1) Disallowed characters: flash + message, but no array entry
+            const bad = target.value.match(DISALLOWED);
+            if (bad) {
+            target.value = target.value.replace(DISALLOWED, '');
+            errorsBox.textContent = 'Illegal character removed.';
+            target.classList.add('illegal-char');
+
+            setTimeout(() => {
+                target.classList.remove('illegal-char');
+                if (errorsBox.textContent === 'Illegal character removed.') {
+                errorsBox.textContent = '';
+                }
+            }, 1200);
+            }
+
+            // 2) Character countdown + warning style for textarea
+            if (target === commentsField) {
+            const max = commentsField.maxLength || 500;
+            const remaining = max - commentsField.value.length;
+
+            commentsField.classList.remove('near-limit');
+
+            if (remaining <= 0) {
+                showInfo('Character limit reached.');
+                commentsField.classList.add('near-limit');
+            } else if (remaining <= 30) {
+                showInfo(`You are near the character limit (${remaining} left).`);
+                commentsField.classList.add('near-limit');
+            } else {
+                showInfo('');
+            }
+            }
+        });
+
+        // 🔹 When user submits
+        form.addEventListener('submit', (evt) => {
+            errorsBox.textContent = '';
+            showInfo('');
+
+            // clear any old custom messages
+            [nameField, emailField, commentsField].forEach(f => f.setCustomValidity(''));
+
+            const thisSubmitErrors = [];
+
+            // Use Constraint Validation API
+            if (!nameField.checkValidity()) {
+            nameField.setCustomValidity('Name is required (2–40 letters, no weird symbols).');
+            thisSubmitErrors.push({
+                field: 'name',
+                message: 'Name is required and should be 2–40 letters.'
+            });
+            }
+
+            if (!emailField.checkValidity()) {
+            emailField.setCustomValidity('Please enter a valid email address.');
+            thisSubmitErrors.push({
+                field: 'email',
+                message: 'Email must look like a valid email address.'
+            });
+            }
+
+            if (!commentsField.checkValidity()) {
+            commentsField.setCustomValidity('Comments are required and should be a bit longer.');
+            thisSubmitErrors.push({
+                field: 'comments',
+                message: 'Comments are required (at least 5 characters).'
+            });
+            }       
+
+            // If there are errors, block submit and record them
+            if (thisSubmitErrors.length > 0) {
+            evt.preventDefault();
+            formErrors = formErrors.concat(thisSubmitErrors);
+            showErrors(thisSubmitErrors);
+            showInfo('Please fix the errors listed above.');
+            updateHiddenErrors();     // save history into hidden field
+            return;
+            }
+
+            // No errors this time; still send previous ones if any
+            if (formErrors.length > 0) {
+            updateHiddenErrors();
+            }
+            showInfo('Form looks good. Submitting...');
+            // allow normal submit to httpbin
+        });
+        </script>
+
+        <script>
+        // theme toggle button
+        const btn = document.getElementById("theme-toggle");
+
+        // set theme based on saved preference
+        function setTheme(mode) {
+            if (mode === "dark") {
+                document.body.classList.add("dark");
+                btn.textContent = "Light Mode";
+            } else {
+                document.body.classList.remove("dark");
+                btn.textContent = "Dark Mode";
+            }
+            localStorage.setItem("theme", mode);
+        }   
+
+        // load previously saved theme or default to light
+        const saved = localStorage.getItem("theme") || "light";
+        setTheme(saved);
+
+        // on click, toggle mode with View Transition API if available
+        btn.addEventListener("click", () => {
+            const newMode = document.body.classList.contains("dark") ? "light" : "dark";
+            const applyTheme = () => setTheme(newMode);
+
+            if (document.startViewTransition) {
+                document.startViewTransition(applyTheme);
+            } else {
+                // fallback if the browser doesn't support the API
+                applyTheme();
+            }
+        });
+
+        </script>
+
+</body>
+</html>

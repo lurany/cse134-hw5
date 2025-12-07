@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiments | Harvey Zhang</title>
+  <meta name="description" content="Custom HTML and semantic element experiments" />
+  <link rel="icon" href="favicon.ico" />
+
+  <style>
+    creator-card {
+      display: block;
+      border: 3px dashed #333;
+      border-radius: 20px;
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: #26d6d6;
+      font-family: monospace;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Harvey Zhang</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="experiments.html" aria-current="page">Experiments</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Custom HTML Elements</h2>
+
+      <creator-card>
+        <h3>My custom tag</h3>
+        <p>This is my HTML element experiment where I style a card.</p>
+        <p>Created by: Harvey</p>
+      </creator-card>
+    </section>
+
+    <section>
+      <h2>JavaScript Custom Element</h2>
+
+      <hello-world></hello-world>
+
+      <script>
+        class HelloWorld extends HTMLElement {
+          constructor() {
+            super();
+            console.log("Hello world! This is my custom element.");
+          }
+        }
+        customElements.define("hello-world", HelloWorld);
+      </script>
+    </section>
+
+    <section>
+  <h2>Required HTML Elements</h2>
+
+  <template id="temp">
+  </template>
+
+  <picture>
+    <source srcset="images/IMG_4987.jpg" media="(min-width: 600px)">
+    <img src="images/IMG_4987.jpg" alt="Foggy day photo" width="200">
+  </picture>
+
+  <audio controls>
+    <source src="media/AOT.mp3" type="audio/mpeg">
+  </audio>
+
+  <video width="320" controls>
+    <source src="media/AOT.mp4" type="video/mp4">
+  </video>
+
+  <canvas id="artCanvas" width="200" height="100" style="border:1px solid #000;"></canvas>
+</section>
+
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Harvey Zhang</p>
+  </footer>
+</body>
+</html>
