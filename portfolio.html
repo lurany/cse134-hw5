@@ -6,42 +6,53 @@
   <title>Portfolio | Harvey Zhang</title> 
   <meta name="description" content="This is where I show my contents" />
   <link rel="icon" href="favicon.ico" /> 
+  <link rel="stylesheet" href="styles.css">
+  <script src="project-card.js" defer></script>
 </head>
 
 <body>
-  <header>
+  <header class="site-header">
     <h1>Harvey Zhang</h1>
     <nav>
-      <ul>
+      <ul class="nav">
         <li><a href="index.html">Home</a></li>
         <li><a href="portfolio.html" aria-current="page">Portfolio</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="form-with-js.html">Contact</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main class="container">
     <section>
       <h2>My Projects</h2>
       <p>These are my projects that I worked on my free time</p>
 
-      <article>
-        <h3>Moody day</h3>
-        <figure>
-          <img src="images/IMG_4987.jpg" alt="Guy standing outside while the skeis are foggy" width="300" />
-          <figcaption>When the skies are sad, who is there to comfort them?</figcaption>
-        </figure>
-        <p>I made this project to make a story about cicumstances in life, where it is okay to be selfish somtimes because 
-            selfcare.
-        </p>
-      </article>
-    </section>
+      <div class="project-grid">
+        <project-card
+        title="Moody day"
+        image="images/IMG_4987.jpg"
+        alt="Guy standing outside while the skies are foggy"
+        caption="when the skies are sad, who is there to comfort them?"
+        description="I made this project to make a story about cicumstances in life, where it is okay to be selfish somtimes because 
+            selfcare."
+        highlights="Captured perfect moment of person looking away">
+      </project-card>
 
-    <section>
+      <project-card
+        title="Golden hour"
+        image="images/sullyoon.jpg"
+        alt="Girl looking up with her eyes closed to feel the sun's warmth"
+        caption="She's got glow on her face, the angel of light"
+        description="I chose this picture to depict the beauty of my favorite singer."
+        highlights="pink and orange skies">
+      </project-card>
+      </div>
+        
+    <section class="card">
       <h2>Highlights</h2>
       <ul>
-        <li>Captured perfect moment of person looking away</li>
+        <li>Captured real moments of my personal life</li>
         <li>Changed lighting to a dark gray setting to match tone</li>
         <li>Used personal photo for storytelling</li>
       </ul>

@@ -182,4 +182,32 @@ footer {
   font-size: 0.9rem;
   text-align: center;
 }
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space);
+    margin-top: var(--space);
+}
+
+project-card {
+    display: block;
+}
+
+.project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space);
+    box-shadow: 0 2px 8px rgba(77, 163, 212, 0.1);
+}
+
+.project-card img {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
                 
