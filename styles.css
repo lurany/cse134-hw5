@@ -203,4 +203,25 @@ project-card {
     display: block;
     margin: 0 auto;
 }
+
+button {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #99d1ff;
+    cursor: pointer;
+    font: inherit;
+    transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+    background: rgba(24, 104, 150, 0.15);
+    box-shadow: 0 2px 4px rgba(31, 41, 55, 0.15);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
                 
