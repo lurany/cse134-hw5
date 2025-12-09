@@ -113,18 +113,11 @@ nav a:hover {
     .container {
         grid-template-columns: 2fr 1fr;
     }
-    .card:first-of-type {
-        grid-column: 1 / -1;
-    }
 }
 
 @media (min-width: 1024px) {
     .container {
-        grid-template-columns: 1fr auto 1fr;
-        justify-items: center;
-    }
-    .card:first-of-type {
-        grid-column: 1 / -1;
+        grid-template-columns: 2fr 1fr;
     }
 }
 

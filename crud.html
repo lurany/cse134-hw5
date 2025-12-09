@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Manage Data | Harvey Zhang</title>
+        <meta name="description" content="CRUD page for managing projects." />
+        <link rel="icon" href="favicon.ico" />
+        <link rel="stylesheet" href="styles.css" />
+        <script src="crud.js" defer></script>
+    </head>
+
+    <body>
+  <header class="site-header">
+    <h1>Harvey Zhang</h1>
+    <nav>
+      <ul class="nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="crud.html" aria-current="page">Manage Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Project Editor (JSONBin CRUD)</h2>
+      <p>
+        This page allows me to <strong>create</strong> , <strong>update</strong>
+        and <strong>delete</strong> data that are stored in my JSONBin.
+        Go to the Portfolio page and press
+        <strong>Load Remote</strong> to see the changes.
+      </p>
+
+      <form id="project-form">
+        <p>
+          <label for="project-id"><strong>ID</strong> (number used to find/update/delete)</label><br>
+          <input id="project-id" name="id" type="number" min="1" />
+        </p>
+
+        <p>
+          <label for="project-title">Title</label><br>
+          <input id="project-title" name="title" type="text" />
+        </p>
+
+        <p>
+          <label for="project-image">Image path</label><br>
+          <input id="project-image" name="image" type="text" placeholder="images/IMG_4987.jpg" />
+        </p>
+
+        <p>
+          <label for="project-alt">Alt text</label><br>
+          <input id="project-alt" name="alt" type="text" />
+        </p>
+
+        <p>
+          <label for="project-caption">Caption</label><br>
+          <input id="project-caption" name="caption" type="text" />
+        </p>
+
+        <p>
+          <label for="project-description">Description</label><br>
+          <textarea id="project-description" name="description" rows="3"></textarea>
+        </p>
+
+        <p>
+          <label for="project-highlights">Highlights (separate with |)</label><br>
+          <input id="project-highlights" name="highlights" type="text"
+                 placeholder="Captured perfect moment of person looking away|pink and orange skies" />
+        </p>
+
+        <p>
+          <button type="button" id="btn-create">Create</button>
+          <button type="button" id="btn-update">Update</button>
+          <button type="button" id="btn-delete">Delete</button>
+        </p>
+      </form>
+
+      <p id="status" class="muted"></p>
+
+      <section>
+        <h3>Example values for testing</h3>
+        <ul>
+          <li><strong>ID:</strong> 3</li>
+          <li><strong>Title:</strong> Foggy night</li>
+          <li><strong>Image:</strong> images/IMG_4987.jpg</li>
+          <li><strong>Highlights:</strong> use <code>|</code> between bullet points</li>
+        </ul>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Harvey Zhang</p>
+  </footer>
+</body>
+</html>

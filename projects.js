@@ -1,5 +1,5 @@
 const BIN_ID = "69352fbcd0ea881f40183810";
-const API_KEY = "$2a$10$g9L.4Zq0yAw6M5gwMbJMRumjSVYaSwPJAmvSJ2WXlGeMYxBji2atO";
+const ACCESS_KEY = "$2a$10$g9L.4Zq0yAw6M5gwMbJMRumjSVYaSwPJAmvSJ2WXlGeMYxBji2atO";
 
 const LOCAL_KEY = "hw5-projects";
 const REMOTE_URL = "https://api.jsonbin.io/v3/b/69352fbcd0ea881f40183810";
@@ -68,12 +68,29 @@ function renderProjects(projects) {
     function loadRemote() {
         fetch(REMOTE_URL, {
             headers: {
-                "X-Access-Key": API_KEY
+                "X-Access-Key": ACCESS_KEY
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("status " + res.status);
+            }
+            return res.json();
+        })
         .then(data => {
-            const projects = data.record || data;
+            let projects = data;
+
+            if (projects.record) {
+                projects = projects.record;
+            }
+            if (projects.record) {
+                projects = projects.record;
+            }
+
+            if (!Array.isArray(projects)) {
+                throw new Error("Unexpected JSON shape");
+            }
+
             renderProjects(projects);
         })
         .catch(err => {
@@ -83,6 +100,9 @@ function renderProjects(projects) {
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("load-local").addEventListener("click", loadLocal);
-        document.getElementById("load-remote").addEventListener("click", loadRemote);
+        const localBtn = document.getElementById("load-local");
+        const remoteBTn = document.getElementById("load-remote");
+
+        if (localBtn) localBtn.addEventListener("click", loadLocal);
+        if (remoteBTn) remoteBTn.addEventListener("click", loadRemote);
     });
